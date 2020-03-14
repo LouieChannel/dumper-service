@@ -1,21 +1,19 @@
-﻿using System;
-using System.Net.Http;
+﻿using Ascalon.Kafka;
+using Ascalon.DumperService.SreamService.Dtos;
 using System.Threading;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using Ascalon.DumperService.SreamService.Dtos;
+using Microsoft.Extensions.Options;
 
 namespace Ascalon.DumperService.SreamService
 {
     public class StreamService : IStreamService
     {
-        private static HttpClient _httpClient;
+        private static Producer _producer;
         private Queue<DumperData> _dataFromDumper = new Queue<DumperData>();
 
-        public StreamService(IHttpClientFactory clientFactory)
+        public StreamService(Producer producer)
         {
-            _httpClient = clientFactory.CreateClient();
-            _httpClient.BaseAddress = new Uri("http://localhost:5000/");
+            _producer = producer;
             Thread sendData = new Thread(new ThreadStart(SendDataToNeuralNetwork));
             sendData.Start();
         }
@@ -31,24 +29,22 @@ namespace Ascalon.DumperService.SreamService
             {
                 while (true)
                 {
-                    List<DumperData> dumperDatas = new List<DumperData>();
+                    List<DumperData> dumperData = new List<DumperData>();
 
                     while (true)
                     {
-                        _dataFromDumper.TryDequeue(out DumperData dumperData);
+                        _dataFromDumper.TryDequeue(out DumperData dumperInfo);
 
                         if (dumperData == null)
                             continue;
 
-                        dumperDatas.Add(dumperData);
+                        dumperData.Add(dumperInfo);
 
-                        if (dumperDatas.Count == 50)
+                        if (dumperData.Count == 50)
                             break;
                     }
 
-                    var result = await _httpClient.PostAsync($"predict", new StringContent(JsonConvert.SerializeObject(dumperDatas, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }), System.Text.Encoding.UTF8, "application/json"));
-
-                    var responseObject = await result.Content.ReadAsStringAsync();
+                    await _producer.Produce($"NeuralNetwork-Producer", dumperData, "NeuralNetwork-Data");
                 }
             }
             finally

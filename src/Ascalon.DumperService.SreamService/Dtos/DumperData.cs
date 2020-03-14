@@ -3,20 +3,24 @@ namespace Ascalon.DumperService.SreamService.Dtos
 {
     public class DumperData
     {
-        public int Id { get; set; }
+        public string Time { get; set; }
 
-        public float Gfx { get; set; }
+        public string Id { get; set; }
 
-        public float Gfy { get; set; }
+        public string Gfx { get; set; }
 
-        public float Gfz { get; set; }
+        public string Gfy { get; set; }
 
-        public float Wx { get; set; }
+        public string Gfz { get; set; }
 
-        public float Wy { get; set; }
+        public string Wx { get; set; }
 
-        public float Wz { get; set; }
+        public string Wy { get; set; }
 
-        public float Speed { get; set; }
+        public string Wz { get; set; }
+
+        public string Speed { get; set; }
+
+        public string Label { get; set; }
     }
 }
