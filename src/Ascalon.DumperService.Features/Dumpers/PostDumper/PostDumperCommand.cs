@@ -19,5 +19,9 @@ namespace Ascalon.DumperService.Features.Dumpers.PostDumper
         public string Wz { get; set; }
 
         public string Speed { get; set; }
+
+        public string Label { get; set; }
+
+        public string Time { get; set; }
     }
 }

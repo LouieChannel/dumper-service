@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ascalon.Kafka" Version="1.0.0" />
     <PackageReference Include="DostaLab.Cqrs" Version="0.4.0" />
     <PackageReference Include="DostaLab.Cqrs.Logging" Version="0.1.1" />
     <PackageReference Include="DostaLab.Cqrs.Validating" Version="0.1.1" />
@@ -14,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Ascalon.DumperService.SreamService\Ascalon.DumperService.SreamService.csproj" />
     <ProjectReference Include="..\Ascalon.DumperService.Features\Ascalon.DumperService.Features.csproj" />
+    <ProjectReference Include="..\Ascalon.DumperService.SreamService\Ascalon.DumperService.SreamService.csproj" />
   </ItemGroup>
 
 </Project>
