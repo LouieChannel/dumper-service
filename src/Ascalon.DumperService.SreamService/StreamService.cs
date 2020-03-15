@@ -2,7 +2,6 @@
 using Ascalon.DumperService.SreamService.Dtos;
 using System.Threading;
 using System.Collections.Generic;
-using Microsoft.Extensions.Options;
 
 namespace Ascalon.DumperService.SreamService
 {
@@ -35,7 +34,7 @@ namespace Ascalon.DumperService.SreamService
                     {
                         _dataFromDumper.TryDequeue(out DumperData dumperInfo);
 
-                        if (dumperData == null)
+                        if (dumperInfo == null)
                             continue;
 
                         dumperData.Add(dumperInfo);
@@ -44,7 +43,7 @@ namespace Ascalon.DumperService.SreamService
                             break;
                     }
 
-                    await _producer.Produce($"NeuralNetwork-Producer", dumperData, "NeuralNetwork-Data");
+                    await _producer.Produce(null, dumperData, "neuralnetwork_data");
                 }
             }
             finally

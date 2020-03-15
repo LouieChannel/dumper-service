@@ -1,18 +1,18 @@
+using MediatR;
 using System.Text.Json;
+using System.Reflection;
 using System.Globalization;
 using System.Text.Json.Serialization;
+using DostaLab.Cqrs.Validating;
+using Ascalon.DumperService.Kafka;
+using Ascalon.DumperService.SreamService;
+using Ascalon.DumperService.Infrastructure;
+using Ascalon.DumperService.Kafka.Services;
+using Ascalon.DumperService.Features.Dumpers.PostDumper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Ascalon.DumperService.Features.Dumpers.PostDumper;
-using MediatR;
-using System.Reflection;
-using DostaLab.Cqrs.Validating;
-using Ascalon.DumperService.SreamService;
-using Ascalon.DumperService.Kafka;
-using Ascalon.DumperService.Infrastructure;
-using Ascalon.DumperService.Kafka.Services;
 
 namespace Ascalon.DumperService
 {
@@ -33,15 +33,13 @@ namespace Ascalon.DumperService
                 options.JsonSerializerOptions.IgnoreNullValues = true;
             });
 
-            services.Configure<KafkaProducerOptions>(Configuration.GetSection("KafkaProducerOptions"));
-
-            services.AddHttpClient();
-
             services.AddCommonValidating();
 
             services.AddMediatR(Assembly.GetAssembly(typeof(PostDumperHandler)));
 
             services.AddKafkaProducer();
+
+            services.Configure<KafkaProducerOptions>(Configuration.GetSection("KafkaProducerOptions"));
 
             services.AddSingleton<IStreamService, StreamService>();
 

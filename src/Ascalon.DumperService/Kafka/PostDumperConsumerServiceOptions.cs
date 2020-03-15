@@ -9,6 +9,5 @@ namespace Ascalon.DumperService.Kafka
     {
         public KafkaConsumerConfig Config { get; set; }
         public string TopicForProducePostDumper { get; set; }
-        public string TopicForProduceErrors { get; set; }
     }
 }
