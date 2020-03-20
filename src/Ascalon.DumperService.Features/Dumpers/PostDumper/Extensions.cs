@@ -1,4 +1,4 @@
-﻿using DostaLab.Cqrs.Validating.Fluent;
+﻿using Ascalon.MefiatR.Validator.Fluent;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Ascalon.DumperService.Features.Dumpers.PostDumper

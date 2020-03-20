@@ -5,8 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DostaLab.Cqrs" Version="0.4.0" />
-    <PackageReference Include="DostaLab.Cqrs.Validating.Fluent" Version="0.1.1" />
+    <PackageReference Include="Ascalon.MefiatR.Validator.Fluent" Version="1.0.0" />
     <PackageReference Include="FluentValidation" Version="8.6.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />

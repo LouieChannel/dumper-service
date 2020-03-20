@@ -3,7 +3,6 @@ using System.Text.Json;
 using System.Reflection;
 using System.Globalization;
 using System.Text.Json.Serialization;
-using DostaLab.Cqrs.Validating;
 using Ascalon.DumperService.Kafka;
 using Ascalon.DumperService.SreamService;
 using Ascalon.DumperService.Infrastructure;
@@ -32,8 +31,6 @@ namespace Ascalon.DumperService
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
                 options.JsonSerializerOptions.IgnoreNullValues = true;
             });
-
-            services.AddCommonValidating();
 
             services.AddMediatR(Assembly.GetAssembly(typeof(PostDumperHandler)));
 

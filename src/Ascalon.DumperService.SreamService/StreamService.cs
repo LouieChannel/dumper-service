@@ -1,7 +1,7 @@
-﻿using Ascalon.Kafka;
-using Ascalon.DumperService.SreamService.Dtos;
-using System.Threading;
+﻿using Ascalon.DumperService.SreamService.Dtos;
+using Ascalon.Kafka;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Ascalon.DumperService.SreamService
 {
