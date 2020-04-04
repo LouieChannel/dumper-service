@@ -1,5 +1,7 @@
 ﻿using Ascalon.DumperService.SreamService.Dtos;
 using Ascalon.Kafka;
+using Microsoft.Extensions.Caching.Memory;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -8,47 +10,40 @@ namespace Ascalon.DumperService.SreamService
     public class StreamService : IStreamService
     {
         private static Producer _producer;
+        private static IMemoryCache _memoryCache;
+        private static int _countOfNewIpAddress = 0;
+        private ConcurrentDictionary<int, List<DumperData>> _dumpersData = new ConcurrentDictionary<int, List<DumperData>>();
         private Queue<DumperData> _dataFromDumper = new Queue<DumperData>();
 
-        public StreamService(Producer producer)
+        public StreamService(Producer producer, IMemoryCache memoryCache)
         {
             _producer = producer;
-            Thread sendData = new Thread(new ThreadStart(SendDataToNeuralNetwork));
-            sendData.Start();
+            _memoryCache = memoryCache;
         }
 
-        public void SetData(DumperData dumperData)
+        public async void SetData(DumperData dumperData)
         {
-            _dataFromDumper.Enqueue(dumperData);
-        }
-
-        public async void SendDataToNeuralNetwork()
-        {
-            try
+            int IdDumper = _memoryCache.GetOrCreate(dumperData.IpAddress, option =>
             {
-                while (true)
-                {
-                    List<DumperData> dumperData = new List<DumperData>();
+                return ++_countOfNewIpAddress;
+            });
 
-                    while (true)
-                    {
-                        _dataFromDumper.TryDequeue(out DumperData dumperInfo);
+            dumperData.Id = IdDumper;
 
-                        if (dumperInfo == null)
-                            continue;
+            _dumpersData.TryGetValue(IdDumper, out List<DumperData> dumperArray);
 
-                        dumperData.Add(dumperInfo);
-
-                        if (dumperData.Count == 50)
-                            break;
-                    }
-
-                    await _producer.Produce(null, dumperData, "neuralnetwork_data");
-                }
+            if (dumperArray == null)
+            {
+                _dumpersData.TryAdd(IdDumper, new List<DumperData>() { dumperData });
+                return;
             }
-            finally
+
+            if (dumperArray.Count != 50)
+                dumperArray.Add(dumperData);
+            else
             {
-                Thread.ResetAbort();
+                _dumpersData.TryUpdate(IdDumper, new List<DumperData>(), dumperArray);
+                await _producer.Produce(null, dumperArray, "neuralnetwork_data");
             }
         }
     }

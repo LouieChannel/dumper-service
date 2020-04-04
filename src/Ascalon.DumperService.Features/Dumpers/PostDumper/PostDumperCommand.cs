@@ -4,7 +4,7 @@ namespace Ascalon.DumperService.Features.Dumpers.PostDumper
 {
     public class PostDumperCommand : IRequest
     {
-        public string Id { get; set; }
+        public string IpAddress { get; set; }
 
         public string Gfx { get; set; }
 

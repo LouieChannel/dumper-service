@@ -32,6 +32,8 @@ namespace Ascalon.DumperService
                 options.JsonSerializerOptions.IgnoreNullValues = true;
             });
 
+            services.AddMemoryCache();
+
             services.AddMediatR(Assembly.GetAssembly(typeof(PostDumperHandler)));
 
             services.AddKafkaProducer();

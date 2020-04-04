@@ -6,7 +6,7 @@ namespace Ascalon.DumperService.Features.Dumpers.PostDumper
     {
         public PostDumperValidator()
         {
-            RuleFor(c => c.Id).NotNull().NotEmpty();
+            RuleFor(c => c.IpAddress).NotNull().NotEmpty();
 
             RuleFor(c => c.Gfx).NotNull().NotEmpty();
 

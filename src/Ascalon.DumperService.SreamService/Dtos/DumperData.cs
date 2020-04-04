@@ -5,7 +5,9 @@ namespace Ascalon.DumperService.SreamService.Dtos
     {
         public string Time { get; set; }
 
-        public string Id { get; set; }
+        public int Id { get; set; }
+
+        public string IpAddress { get; set; }
 
         public string Gfx { get; set; }
 

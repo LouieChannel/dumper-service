@@ -5,7 +5,5 @@ namespace Ascalon.DumperService.SreamService
     public interface IStreamService
     {
         void SetData(DumperData dumperData);
-
-        void SendDataToNeuralNetwork();
     }
 }

@@ -15,10 +15,10 @@ namespace Ascalon.DumperService.Features.Dumpers.Dtos
                 Wx = postDumperCommand.Wx,
                 Wy = postDumperCommand.Wy,
                 Wz = postDumperCommand.Wz,
-                Id = postDumperCommand.Id,
                 Speed = postDumperCommand.Speed,
                 Label = postDumperCommand.Label,
-                Time = postDumperCommand.Time
+                Time = postDumperCommand.Time,
+                IpAddress = postDumperCommand.IpAddress,
             };
         }
     }
