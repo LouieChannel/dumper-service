@@ -1,17 +1,17 @@
-using MediatR;
-using System.Text.Json;
-using System.Reflection;
-using System.Globalization;
-using System.Text.Json.Serialization;
-using Ascalon.DumperService.Kafka;
-using Ascalon.DumperService.SreamService;
-using Ascalon.DumperService.Infrastructure;
-using Ascalon.DumperService.Kafka.Services;
 using Ascalon.DumperService.Features.Dumpers.PostDumper;
+using Ascalon.DumperService.Infrastructure;
+using Ascalon.DumperService.Kafka;
+using Ascalon.DumperService.Kafka.Services;
+using Ascalon.DumperService.SreamService;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
+using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Ascalon.DumperService
 {

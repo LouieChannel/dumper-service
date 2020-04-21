@@ -1,9 +1,11 @@
 ﻿using Ascalon.DumperService.SreamService.Dtos;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Ascalon.DumperService.SreamService
 {
     public interface IStreamService
     {
-        void SetData(DumperData dumperData);
+        Task SetData(List<float> array, string ipAddress, string label);
     }
 }

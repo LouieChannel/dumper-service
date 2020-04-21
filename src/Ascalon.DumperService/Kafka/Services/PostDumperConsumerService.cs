@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using MediatR;
+﻿using Ascalon.DumperService.Features.Dumpers.PostDumper;
 using Ascalon.Kafka;
 using Ascalon.Kafka.Dtos;
-using Ascalon.DumperService.Features.Dumpers.PostDumper;
 using Confluent.Kafka;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Ascalon.DumperService.Kafka.Services
 {
@@ -37,14 +37,14 @@ namespace Ascalon.DumperService.Kafka.Services
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
                 foreach (var postDumerCommand in postDumperCommands)
-                   await mediator.Send(postDumerCommand);
+                    await mediator.Send(postDumerCommand);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Error in method: {nameof(ProcessMessage)}", ex);
             }
         }
-        
+
         protected override KafkaConsumerConfig BuildConfiguration() => _options.Config;
     }
 }

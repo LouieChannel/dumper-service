@@ -3,7 +3,7 @@ using Ascalon.Kafka;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ascalon.DumperService.SreamService
 {
@@ -12,8 +12,7 @@ namespace Ascalon.DumperService.SreamService
         private static Producer _producer;
         private static IMemoryCache _memoryCache;
         private static int _countOfNewIpAddress = 0;
-        private ConcurrentDictionary<int, List<DumperData>> _dumpersData = new ConcurrentDictionary<int, List<DumperData>>();
-        private Queue<DumperData> _dataFromDumper = new Queue<DumperData>();
+        private ConcurrentDictionary<int, DumperData> _dumpersData = new ConcurrentDictionary<int, DumperData>();
 
         public StreamService(Producer producer, IMemoryCache memoryCache)
         {
@@ -21,30 +20,46 @@ namespace Ascalon.DumperService.SreamService
             _memoryCache = memoryCache;
         }
 
-        public async void SetData(DumperData dumperData)
+        public Task SetData(List<float> array, string ipAddress, string label)
         {
-            int IdDumper = _memoryCache.GetOrCreate(dumperData.IpAddress, option =>
+            return Task.Run(async () =>
             {
-                return ++_countOfNewIpAddress;
+                int IdDumper = _memoryCache.GetOrCreate(ipAddress, option =>
+                {
+                    return ++_countOfNewIpAddress;
+                });
+
+                _dumpersData.TryGetValue(IdDumper, out DumperData dumperData);
+
+                if (dumperData == null)
+                {
+                    _dumpersData.TryAdd(IdDumper, new DumperData() 
+                    { 
+                        Id = IdDumper, 
+                        IpAddress = ipAddress,
+                        Label = label,
+                        Array = new List<List<float>>() 
+                        { 
+                            array 
+                        } 
+                    });
+                    return;
+                }
+
+                if (dumperData.Array.Count != 50)
+                    dumperData.Array.Add(array);
+                else
+                {
+                    _dumpersData.TryUpdate(IdDumper, new DumperData() 
+                    { 
+                        Id = IdDumper, 
+                        IpAddress = ipAddress,
+                        Label = label,
+                    }, dumperData);
+
+                    await _producer.Produce(null, dumperData, "neuralnetwork_data");
+                }
             });
-
-            dumperData.Id = IdDumper;
-
-            _dumpersData.TryGetValue(IdDumper, out List<DumperData> dumperArray);
-
-            if (dumperArray == null)
-            {
-                _dumpersData.TryAdd(IdDumper, new List<DumperData>() { dumperData });
-                return;
-            }
-
-            if (dumperArray.Count != 50)
-                dumperArray.Add(dumperData);
-            else
-            {
-                _dumpersData.TryUpdate(IdDumper, new List<DumperData>(), dumperArray);
-                await _producer.Produce(null, dumperArray, "neuralnetwork_data");
-            }
         }
     }
 }

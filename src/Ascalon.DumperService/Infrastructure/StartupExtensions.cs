@@ -1,8 +1,8 @@
-﻿using Ascalon.Kafka;
-using Ascalon.DumperService.Kafka;
+﻿using Ascalon.DumperService.Kafka;
+using Ascalon.Kafka;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Ascalon.DumperService.Infrastructure
 {

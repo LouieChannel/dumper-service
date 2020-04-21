@@ -1,8 +1,7 @@
-﻿using MediatR;
+﻿using Ascalon.DumperService.SreamService;
+using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using Ascalon.DumperService.SreamService;
-using Ascalon.DumperService.Features.Dumpers.Dtos;
 
 namespace Ascalon.DumperService.Features.Dumpers.PostDumper
 {
@@ -17,7 +16,7 @@ namespace Ascalon.DumperService.Features.Dumpers.PostDumper
 
         public async Task<Unit> Handle(PostDumperCommand request, CancellationToken cancellationToken)
         {
-            _streamService.SetData(request.ToDumperData());
+            await _streamService.SetData(request.Array, request.IpAddress, request.Label);
 
             return Unit.Value;
         }

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Ascalon.DumperService.Features.Dumpers.PostDumper;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Ascalon.DumperService.Features.Dumpers.PostDumper;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Ascalon.DumperService.Controllers
@@ -30,7 +30,7 @@ namespace Ascalon.DumperService.Controllers
             try
             {
                 foreach (PostDumperCommand postDumperCommand in postDumperCommands)
-                   await _mediator.Send(postDumperCommand);
+                    await _mediator.Send(postDumperCommand);
 
                 return Ok();
             }
